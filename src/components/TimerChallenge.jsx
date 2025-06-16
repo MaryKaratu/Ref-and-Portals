@@ -3,6 +3,7 @@ import ResultModal from "./ResultsModal";
 
 export default function TimerChallenge({ title, targetTime }) {
   const timer = useRef();
+  const dailog = useRef();
 
   const [timerStarted, setTimerStarted] = useState(false);
   const [timerExpired, setTimerExpired] = useState(false);
@@ -11,6 +12,7 @@ export default function TimerChallenge({ title, targetTime }) {
     timer.current = setTimerStarted(true);
     setTimeout(() => {
       setTimerExpired(true);
+      dailog.current.showModal();
     }, targetTime * 1000);
   }
 
@@ -20,7 +22,7 @@ export default function TimerChallenge({ title, targetTime }) {
 
   return (
     <>
-      {timerExpired && <ResultModal targetTime={targetTime} result="lost" />}
+      <ResultModal ref={dailog} targetTime={targetTime} result="lost" />
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
