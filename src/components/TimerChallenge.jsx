@@ -5,19 +5,24 @@ export default function TimerChallenge({ title, targetTime }) {
   const timer = useRef();
   const dailog = useRef();
 
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
+  const [timerRemaining, setTimeRemaining] = useState(targetTime * 1000);
+
+  const timerIsActive =
+    timerRemaining > 0 && timerRemaining < targetTime * 1000;
 
   function handleStart() {
-    timer.current = setTimerStarted(true);
-    setTimeout(() => {
-      setTimerExpired(true);
-      dailog.current.open();
-    }, targetTime * 1000);
+    timer.current = setInterval(() => {
+      setTimeRemaining((prevTime) => prevTime - 10);
+    }, 10);
+  }
+
+  if (timerRemaining <= 0) {
+    clearInterval(timer.current);
+    setTimeRemaining(targetTime * 1000);
   }
 
   function handleStop() {
-    clearTimeout(timer.current);
+    clearInterval(timer.current);
   }
 
   return (
